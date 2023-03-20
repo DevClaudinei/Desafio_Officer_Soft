@@ -6,46 +6,71 @@ namespace AppServices.Validations
 {
     public static class StringExtensions
     {
-        public static bool DocumentoEhValido(this string document)
+        public static bool DocumentoEhValido(this string documento)
         {
-            if (document.Length != 11) return false;
+            documento = documento.RemoveMascaraDeCpf();
 
-            var firstDigitChecker = 0;
-            for (int i = 0; i < document.Length - 2; i++)
+            if (!documento.PossuiNumerosValidos() || documento.TodosOsCaracteresSaoIguaisOPrimeiro()) return false;
+
+            if (documento.Length != 11) return false;
+
+            var validadorPrimeiroDigito = 0;
+            for (int i = 0; i < documento.Length - 2; i++)
             {
-                firstDigitChecker += document.ConverteParaInteiro(i) * (10 - i);
+                validadorPrimeiroDigito += documento.ConverteParaInteiro(i) * (10 - i);
             }
-            firstDigitChecker = firstDigitChecker * 10 % 11;
-            if (firstDigitChecker is 10) firstDigitChecker = 0;
+            validadorPrimeiroDigito = validadorPrimeiroDigito * 10 % 11;
+            if (validadorPrimeiroDigito is 10) validadorPrimeiroDigito = 0;
 
-            var secondDigitChecker = 0;
-            for (int i = 0; i < document.Length - 1; i++)
+            var validadorSegundoDigito = 0;
+            for (int i = 0; i < documento.Length - 1; i++)
             {
-                secondDigitChecker += document.ConverteParaInteiro(i) * (11 - i);
+                validadorSegundoDigito += documento.ConverteParaInteiro(i) * (11 - i);
             }
-            secondDigitChecker = secondDigitChecker * 10 % 11;
-            if (secondDigitChecker is 10) secondDigitChecker = 0;
+            validadorSegundoDigito = validadorSegundoDigito * 10 % 11;
+            if (validadorSegundoDigito is 10) validadorSegundoDigito = 0;
 
-            return firstDigitChecker.Equals(document.ConverteParaInteiro(^2)) && secondDigitChecker.Equals(document.ConverteParaInteiro(^1));
+            return validadorPrimeiroDigito.Equals(documento.ConverteParaInteiro(^2)) 
+                && validadorSegundoDigito.Equals(documento.ConverteParaInteiro(^1));
         }
 
-        public static int ConverteParaInteiro(this string cpf, Index index)
+        public static string RemoveMascaraDeCpf(this string cpf)
         {
-            var indexValue = index.IsFromEnd
-                ? cpf.Length - index.Value
-                : index.Value;
-
-            return (int)char.GetNumericValue(cpf, indexValue);
+            var cpfSemMascara = cpf.Replace(".", string.Empty).Replace("-", string.Empty);
+            return cpfSemMascara;
         }
 
-        public static bool ContemEspacoEmBranco(this string fields)
-            => fields.Split(" ").Any(x => x == string.Empty);
+        public static bool TodosOsCaracteresSaoIguaisOPrimeiro(this string campo)
+        {
+            campo = campo.Replace(" ", string.Empty).ToLower();
 
-        public static bool ExisteAlgumSimboloOuCaracterEspecial(this string value)
-            => value.Replace(" ", string.Empty).Any(x => !char.IsLetter(x));
+            return campo.All(c => c.Equals(campo.First()));
+        }
 
-        public static bool TemPeloMenosDoisCaracteresParaCadaPalavra(this string fields)
-            => !fields.Split(" ").Where(x => x.Length < 2).Any();
+        public static bool PossuiNumerosValidos(this string numero)
+        {
+            if (string.IsNullOrEmpty(numero)) return false;
+
+            return numero.All(x => char.IsDigit(x));
+        }
+
+        public static int ConverteParaInteiro(this string cpf, Index indice)
+        {
+            var valorDoIndice = indice.IsFromEnd
+                ? cpf.Length - indice.Value
+                : indice.Value;
+
+            return (int)char.GetNumericValue(cpf, valorDoIndice);
+        }
+
+        public static bool ContemEspacoEmBranco(this string campos)
+            => campos.Split(" ").Any(x => x == string.Empty);
+
+        public static bool ExisteAlgumSimboloOuCaracterEspecial(this string valor)
+            => valor.Replace(" ", string.Empty).Any(x => !char.IsLetter(x));
+
+        public static bool TemPeloMenosDoisCaracteresParaCadaPalavra(this string campos)
+            => !campos.Split(" ").Where(x => x.Length < 2).Any();
 
         public static bool EhUmCepValido(this string cep)
         {

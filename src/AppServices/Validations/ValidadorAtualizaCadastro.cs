@@ -3,15 +3,13 @@ using FluentValidation;
 
 namespace AppServices.Validations
 {
-    public class ValidadorCriaCadastro : AbstractValidator<CriaCadastro>
+    public class ValidadorAtualizaCadastro : AbstractValidator<AtualizaCadastro>
     {
-        public ValidadorCriaCadastro()
+        public ValidadorAtualizaCadastro()
         {
             RuleFor(x => x.Cpf)
                 .NotEmpty()
                 .NotNull()
-                .MinimumLength(11)
-                .MaximumLength(14)
                 .Must(x => x.DocumentoEhValido())
                 .WithMessage("Verifique a digitação do Cpf. Um ou mais números podem estar incorretos.");
 
@@ -32,7 +30,7 @@ namespace AppServices.Validations
                 .NotEmpty()
                 .NotNull()
                 .Must(x => x.EhUmCepValido())
-                .WithMessage("O campo PostalCode deve estar no formato XXXXX-XXX");
+                .WithMessage("O campo Cep deve estar no formato XXXXX-XXX");
 
             RuleFor(x => x.Numero)
                 .NotEmpty()
