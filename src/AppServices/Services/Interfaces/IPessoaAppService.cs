@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AppServices.Services
+namespace AppServices.Services.Interfaces
 {
     public interface IPessoaAppService
     {
@@ -12,5 +12,7 @@ namespace AppServices.Services
         Task<List<PessoaInfo>> MostraTodosCadastrados();
         void AtualizCadastro(long id, AtualizaCadastro atualizaCadastro);
         void ExcluiPessoa(long id);
+        Task<PessoaInfo> BuscaPessoaPeloNome(string name);
+        Task<PessoaInfo> BuscaPessoaPeloCpf(string cpf);
     }
 }
