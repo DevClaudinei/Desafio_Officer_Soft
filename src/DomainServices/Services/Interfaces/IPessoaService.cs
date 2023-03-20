@@ -12,5 +12,7 @@ namespace DomainServices.Services.Interfaces
         void AtualizCadastro(Pessoa pessoa);
         void ExcluiPessoa(long id);
         Task<Pessoa> BuscaPessoaPorId(long id);
+        Task<Pessoa> BuscaPessoaPeloNome(string name);
+        Task<Pessoa> BuscaPessoaPeloCpf(string cpf);
     }
 }

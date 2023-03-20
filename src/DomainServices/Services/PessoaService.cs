@@ -20,8 +20,8 @@ namespace DomainServices.Services
 
         public async Task<long> CadastraPessoa(Pessoa pessoa)
         {
-            VerificaSePessoaJaExiste(pessoa);
             pessoa.Cpf = FormataCpf(pessoa.Cpf);
+            VerificaSePessoaJaExiste(pessoa);
 
             var cadastro = _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
@@ -29,25 +29,17 @@ namespace DomainServices.Services
             return cadastro.Entity.Id;
         }
 
-        private string FormataCpf(string cpf)
-        {
-            var x = cpf.Substring(0, 3) + "." + cpf.Substring(3, 3) + "." + cpf.Substring(6, 3) + "-" + cpf.Substring(9, 2);
-            return x;
-        }
-
         private void VerificaSePessoaJaExiste(Pessoa pessoa)
         {
             var pessoaJaExiste = _context.Pessoas.AnyAsync(x => x.Cpf.Equals(pessoa.Cpf)).Result;
 
             if (pessoaJaExiste)
-                throw new BadRequestException($"Customer already exists for CPF: {pessoa.Cpf}");
+                throw new BadRequestException($"Pessoa com o Cpf: {pessoa.Cpf} já esta cadastrada.");
         }
 
-        public async Task<Pessoa> MostraPessoaPorId(long id)
+        private static string FormataCpf(string cpf)
         {
-            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
-
-            return pessoaEncontrada;
+            return cpf.Substring(0, 3) + "." + cpf.Substring(3, 3) + "." + cpf.Substring(6, 3) + "-" + cpf.Substring(9, 2);
         }
 
         public async Task<List<Pessoa>> MostraTodosCadastrados()
@@ -57,18 +49,13 @@ namespace DomainServices.Services
             return pessoasCadastradas;
         }
 
-        public void AtualizCadastro(Pessoa pessoa)
+        public async Task<Pessoa> BuscaPessoaPeloCpf(string cpf)
         {
-            _context.Update(pessoa);
-            _context.SaveChanges();
-        }
+            cpf = FormataCpf(cpf);
 
-        public void ExcluiPessoa(long id)
-        {
-            var pessoaParaExclusao = _context.Pessoas.Find(id);
+            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Cpf.Equals(cpf));
 
-            _context.Remove(pessoaParaExclusao);
-            _context.SaveChangesAsync();
+            return pessoaEncontrada;
         }
 
         public async Task<Pessoa> BuscaPessoaPorId(long id)
@@ -76,6 +63,37 @@ namespace DomainServices.Services
             var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             return pessoaEncontrada;
+        }
+
+        public async Task<Pessoa> BuscaPessoaPeloNome(string name)
+        {
+            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Nome.Contains(name));
+
+            return pessoaEncontrada;
+        }
+
+        public async Task<Pessoa> MostraPessoaPorId(long id)
+        {
+            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+            return pessoaEncontrada;
+        }
+
+        public void AtualizCadastro(Pessoa pessoa)
+        {
+            pessoa.Cpf = FormataCpf(pessoa.Cpf);
+
+            _context.Update(pessoa);
+            _context.SaveChanges();
+        }
+
+        public void ExcluiPessoa(long id)
+        {
+            var pessoaParaExclusao = _context.Pessoas.Find(id) 
+                ?? throw new NotFoundException($"Pessoa com o Id: {id} não localizada.");
+
+            _context.Remove(pessoaParaExclusao);
+            _context.SaveChangesAsync();
         }
     }
 }
