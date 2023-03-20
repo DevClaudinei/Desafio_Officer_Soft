@@ -1,5 +1,5 @@
 using Application.Models.DTOs;
-using AppServices.Services;
+using AppServices.Services.Interfaces;
 using DomainServices.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +30,31 @@ namespace CadastroPessoa.Controllers
             return View(await _pessoaAppService.BuscaPessoaPorId(id));
         }
 
+
+        public async Task<IActionResult> GetByName(string nome)
+        {
+            try
+            {
+                return View(await _pessoaAppService.BuscaPessoaPeloNome(nome));
+            }
+            catch (NotFoundException e)
+            {
+                return View("Error404", e);
+            }
+        }
+
+        public async Task<IActionResult> GetByCpf(string cpf)
+        {
+            try
+            {
+                return View(await _pessoaAppService.BuscaPessoaPeloCpf(cpf));
+            }
+            catch (NotFoundException e)
+            {
+                return View("Error404", e);
+            }
+        }
+
         //GET: Pessoa/Create
         public IActionResult Create()
         {
@@ -51,7 +76,7 @@ namespace CadastroPessoa.Controllers
                 }
                 catch (BadRequestException e)
                 {
-                    return BadRequest(e.Message);
+                    return View("Error500", e);
                 }
                 
                 return RedirectToAction(nameof(Index));
@@ -63,16 +88,16 @@ namespace CadastroPessoa.Controllers
         // GET: Pessoa/Edit/5
         public async Task<IActionResult> Edit(long id)
         {
-            try
-            {
-                var pessoaParaAtualizar = await _pessoaAppService.MostraPessoaPorId(id);
+                try
+                {
+                    var pessoaParaAtualizar = await _pessoaAppService.MostraPessoaPorId(id);
 
-                return View(pessoaParaAtualizar);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+                    return View(pessoaParaAtualizar);
+                }
+                catch (NotFoundException e)
+                {
+                    return View("Error404", e);
+                }
         }
 
         // POST: Pessoa/Edit/5
@@ -82,16 +107,21 @@ namespace CadastroPessoa.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(long id, AtualizaCadastro atualizaCadastro)
         {
-            try
+            if (ModelState.IsValid)
             {
-                _pessoaAppService.AtualizCadastro(id, atualizaCadastro);
-            }
-            catch (BadRequestException e)
-            {
-                return BadRequest(e.Message);
+                try
+                {
+                    _pessoaAppService.AtualizCadastro(id, atualizaCadastro);
+                }
+                catch (BadRequestException e)
+                {
+                    return View("Error500", e);
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index));
+            return View(atualizaCadastro);
         }
 
         // GET: Pessoa/Delete/5
@@ -105,7 +135,7 @@ namespace CadastroPessoa.Controllers
             }
             catch (BadRequestException e)
             {
-                return NotFound(e.Message);
+                return View("Error404", e);
             }
         }
 
@@ -120,10 +150,11 @@ namespace CadastroPessoa.Controllers
             }
             catch (BadRequestException e)
             {
-                return BadRequest(e.Message);
+                return View("Error500", e);
             }
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

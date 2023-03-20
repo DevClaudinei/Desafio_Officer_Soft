@@ -1,5 +1,5 @@
-﻿using AppServices;
-using AppServices.Services;
+﻿using AppServices.Services;
+using AppServices.Services.Interfaces;
 using DomainServices.Services;
 using DomainServices.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
