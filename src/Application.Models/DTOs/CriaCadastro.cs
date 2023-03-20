@@ -17,7 +17,7 @@
             string rg
         )
         {
-            Cpf = FormatCPF(cpf.Trim());
+            Cpf = cpf.Trim();
             Nome = nome;
             Cep = cep.Trim();
             Endereco = endereco;
