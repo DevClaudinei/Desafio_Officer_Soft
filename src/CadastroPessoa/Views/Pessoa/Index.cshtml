@@ -9,9 +9,19 @@
 <p>
     <a asp-action="Create">Cadastrar Pessoa</a>
 </p>
-<p>
-    <a asp-action="Get">Busca Pessoa Por Nome</a>
-</p>
+
+<form asp-controller="Pessoa" asp-action="GetByName" method="get">
+    <p>
+        Nome: <input type="text" input name="nome" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
+<form asp-controller="Pessoa" asp-action="GetByCpf" method="get">
+    <p>
+        Cpf: <input type="text" input name="cpf" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
