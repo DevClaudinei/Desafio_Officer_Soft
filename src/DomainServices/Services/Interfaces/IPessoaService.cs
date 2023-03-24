@@ -8,7 +8,7 @@ namespace DomainServices.Services.Interfaces
     {
         Task<long> CadastraPessoa(Pessoa pessoa);
         Task<Pessoa> MostraPessoaPorId(long id);
-        Task<List<Pessoa>> MostraTodosCadastrados();
+        Task<IEnumerable<Pessoa>> MostraTodosCadastrados();
         void AtualizCadastro(Pessoa pessoa);
         void ExcluiPessoa(long id);
         Task<Pessoa> BuscaPessoaPorId(long id);

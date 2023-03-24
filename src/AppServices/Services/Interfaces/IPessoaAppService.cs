@@ -9,7 +9,7 @@ namespace AppServices.Services.Interfaces
         Task<long> CadastraPessoa(CriaCadastro criaCadastro);
         Task<AtualizaCadastro> MostraPessoaPorId(long id);
         Task<PessoaInfo> BuscaPessoaPorId(long id);
-        Task<List<PessoaInfo>> MostraTodosCadastrados();
+        Task<IEnumerable<PessoaInfo>> MostraTodosCadastrados();
         void AtualizCadastro(long id, AtualizaCadastro atualizaCadastro);
         void ExcluiPessoa(long id);
         Task<PessoaInfo> BuscaPessoaPeloNome(string name);

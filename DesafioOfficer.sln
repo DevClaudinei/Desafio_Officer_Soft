@@ -3,17 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CadastroPessoa", "CadastroPessoa\CadastroPessoa.csproj", "{03B6985C-6051-441C-9C7B-9A6B40FA5C03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CadastroPessoa", "src\CadastroPessoa\CadastroPessoa.csproj", "{03B6985C-6051-441C-9C7B-9A6B40FA5C03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModels", "DomainModels\DomainModels.csproj", "{5001BF1B-15A0-485A-8A7B-06FE7E52524F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModels", "src\DomainModels\DomainModels.csproj", "{5001BF1B-15A0-485A-8A7B-06FE7E52524F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Models", "Application.Models\Application.Models.csproj", "{F2EE6AE5-3D32-4F11-AE13-AF5F5AD92954}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Models", "src\Application.Models\Application.Models.csproj", "{F2EE6AE5-3D32-4F11-AE13-AF5F5AD92954}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppServices", "AppServices\AppServices.csproj", "{B639C6D8-3FCE-44F7-977F-BB6A33952B8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppServices", "src\AppServices\AppServices.csproj", "{B639C6D8-3FCE-44F7-977F-BB6A33952B8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices", "DomainServices\DomainServices.csproj", "{4CDA3D86-AED7-4A2A-A712-0FAD24C2F6DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices", "src\DomainServices\DomainServices.csproj", "{4CDA3D86-AED7-4A2A-A712-0FAD24C2F6DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Data", "Infrastructure.Data\Infrastructure.Data.csproj", "{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Data", "src\Infrastructure.Data\Infrastructure.Data.csproj", "{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9B230116-46D3-471C-AA75-EDB69E584994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{7E56069B-1943-460F-9B95-12032FB087F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +51,22 @@ Global
 		{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E56069B-1943-460F-9B95-12032FB087F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E56069B-1943-460F-9B95-12032FB087F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E56069B-1943-460F-9B95-12032FB087F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E56069B-1943-460F-9B95-12032FB087F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03B6985C-6051-441C-9C7B-9A6B40FA5C03} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{5001BF1B-15A0-485A-8A7B-06FE7E52524F} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{F2EE6AE5-3D32-4F11-AE13-AF5F5AD92954} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{B639C6D8-3FCE-44F7-977F-BB6A33952B8C} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{4CDA3D86-AED7-4A2A-A712-0FAD24C2F6DC} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{F3C62A45-1DF0-4BE6-B8B4-827AECD31E76} = {8D15BB3E-E1E7-4ACE-9A5C-10637E9762D1}
+		{7E56069B-1943-460F-9B95-12032FB087F2} = {9B230116-46D3-471C-AA75-EDB69E584994}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {695ADBB8-6097-4292-9B03-CCCE3343DB8A}

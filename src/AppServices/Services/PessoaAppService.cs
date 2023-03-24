@@ -27,11 +27,11 @@ namespace AppServices.Services
             return await _customerService.CadastraPessoa(pessoa);
         }
 
-        public async Task<List<PessoaInfo>> MostraTodosCadastrados()
+        public async Task<IEnumerable<PessoaInfo>> MostraTodosCadastrados()
         {
             var pessoasEncontradas = await _customerService.MostraTodosCadastrados();
 
-            return _mapper.Map<List<PessoaInfo>>(pessoasEncontradas);
+            return _mapper.Map<IEnumerable<PessoaInfo>>(pessoasEncontradas);
         }
 
         public async Task<PessoaInfo> BuscaPessoaPeloCpf(string cpf)

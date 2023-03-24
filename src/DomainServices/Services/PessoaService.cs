@@ -42,7 +42,7 @@ namespace DomainServices.Services
             return cpf.Substring(0, 3) + "." + cpf.Substring(3, 3) + "." + cpf.Substring(6, 3) + "-" + cpf.Substring(9, 2);
         }
 
-        public async Task<List<Pessoa>> MostraTodosCadastrados()
+        public async Task<IEnumerable<Pessoa>> MostraTodosCadastrados()
         {
             var pessoasCadastradas = await _context.Pessoas.ToListAsync();
 
