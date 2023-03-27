@@ -6,6 +6,7 @@ using DomainServices.Exceptions;
 using DomainServices.Services.Interfaces;
 using FluentAssertions;
 using Moq;
+using System.Threading.Tasks;
 using UnitTests.Fixtures;
 
 namespace UnitTests.Aplicacao
@@ -48,16 +49,16 @@ namespace UnitTests.Aplicacao
         }
 
         [Fact]
-        public async Task Deveria_Mostrar_Todos_Os_Cadastrados_Com_Sucesso()
+        public void Deveria_Mostrar_Todos_Os_Cadastrados_Com_Sucesso()
         {
             // Arrange
             var pessoasFakes = PessoaFixture.PessoasFakes(1);
 
             _pessoaService.Setup(x => x.MostraTodosCadastrados())
-                .ReturnsAsync(pessoasFakes);
+                .Returns(pessoasFakes);
 
             // Act
-            var result = await _pessoaAppService.MostraTodosCadastrados();
+            var result = _pessoaAppService.MostraTodosCadastrados();
 
             // Assert
             result.Should().HaveCount(1);
@@ -179,7 +180,7 @@ namespace UnitTests.Aplicacao
             // Arrange
             var pessoaFake = PessoaFixture.PessoaFake();
 
-            _pessoaService.Setup(x => x.MostraPessoaPorId(It.IsAny<long>()))
+            _pessoaService.Setup(x => x.BuscaPessoaPorId(It.IsAny<long>()))
                 .ReturnsAsync(pessoaFake);
 
             // Act
@@ -188,7 +189,7 @@ namespace UnitTests.Aplicacao
             // Asser
             result.Id.Should().Be(pessoaFake.Id);
 
-            _pessoaService.Verify(x => x.MostraPessoaPorId(It.IsAny<long>()), Times.Once());
+            _pessoaService.Verify(x => x.BuscaPessoaPorId(It.IsAny<long>()), Times.Once());
         }
 
         [Fact]
@@ -196,14 +197,14 @@ namespace UnitTests.Aplicacao
         {
             // Arrange
             var atualizaCadastroFake = AtualizaCadastroFixture.AtualizaCadastroFake();
-
-            _pessoaService.Setup(x => x.AtualizCadastro(It.IsAny<Pessoa>()));
+             
+            _pessoaService.Setup(x => x.AtualizCadastro(It.IsAny<long>(), It.IsAny<Pessoa>()));
 
             // Act
             _pessoaAppService.AtualizCadastro(atualizaCadastroFake.Id, atualizaCadastroFake);
 
             // Assert
-            _pessoaService.Verify(x => x.AtualizCadastro(It.IsAny<Pessoa>()), Times.Once());
+            _pessoaService.Verify(x => x.AtualizCadastro(It.IsAny<long>(), It.IsAny<Pessoa>()), Times.Once());
 
         }
 
@@ -221,6 +222,5 @@ namespace UnitTests.Aplicacao
             // Assert
             _pessoaService.Verify(x => x.ExcluiPessoa(It.IsAny<long>()), Times.Once());
         }
-
     }
 }
