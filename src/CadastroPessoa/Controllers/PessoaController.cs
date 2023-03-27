@@ -19,9 +19,9 @@ namespace CadastroPessoa.Controllers
         }
 
         // GET: Pessoa
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _pessoaAppService.MostraTodosCadastrados());
+            return View(_pessoaAppService.MostraTodosCadastrados());
         }
 
         // GET: Pessoa/Details/5
@@ -155,6 +155,5 @@ namespace CadastroPessoa.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
     }
 }
