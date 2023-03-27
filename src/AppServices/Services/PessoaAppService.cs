@@ -27,9 +27,9 @@ namespace AppServices.Services
             return await _customerService.CadastraPessoa(pessoa);
         }
 
-        public async Task<IEnumerable<PessoaInfo>> MostraTodosCadastrados()
+        public IEnumerable<PessoaInfo> MostraTodosCadastrados()
         {
-            var pessoasEncontradas = await _customerService.MostraTodosCadastrados();
+            var pessoasEncontradas = _customerService.MostraTodosCadastrados();
 
             return _mapper.Map<IEnumerable<PessoaInfo>>(pessoasEncontradas);
         }
@@ -60,7 +60,7 @@ namespace AppServices.Services
 
         public async Task<AtualizaCadastro> MostraPessoaPorId(long id)
         {
-            var pessoaEncontrada = await _customerService.MostraPessoaPorId(id);
+            var pessoaEncontrada = await _customerService.BuscaPessoaPorId(id);
 
             return _mapper.Map<AtualizaCadastro>(pessoaEncontrada);
         }
@@ -68,9 +68,8 @@ namespace AppServices.Services
         public void AtualizCadastro(long id, AtualizaCadastro atualizaCadastro)
         {
             var pessoa = _mapper.Map<Pessoa>(atualizaCadastro);
-            pessoa.Id = id;
 
-            _customerService.AtualizCadastro(pessoa);
+            _customerService.AtualizCadastro(id, pessoa);
         }
 
         public void ExcluiPessoa(long id)
