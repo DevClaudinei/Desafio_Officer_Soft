@@ -1,5 +1,5 @@
 using CadastroPessoa.Configurations;
-using Infrastructure.Data.Data;
+using Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddServicesConfiguration();
 builder.Services.AddAutoMapperConfiguration();
 builder.Services.AddMvcConfiguration();
+builder.Services.AddDbConfiguration(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
