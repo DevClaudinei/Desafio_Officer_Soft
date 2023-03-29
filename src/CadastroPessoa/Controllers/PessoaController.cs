@@ -27,9 +27,15 @@ namespace CadastroPessoa.Controllers
         // GET: Pessoa/Details/5
         public async Task<IActionResult> Details(long id)
         {
-            return View(await _pessoaAppService.BuscaPessoaPorId(id));
+            try
+            {
+                return View(await _pessoaAppService.BuscaPessoaPorId(id));
+            }
+            catch (NotFoundException e)
+            {
+                return View("Error404", e);
+            }
         }
-
 
         public async Task<IActionResult> GetByName(string nome)
         {

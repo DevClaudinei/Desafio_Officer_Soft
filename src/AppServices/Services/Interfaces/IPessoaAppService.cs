@@ -12,7 +12,7 @@ namespace AppServices.Services.Interfaces
         IEnumerable<PessoaInfo> MostraTodosCadastrados();
         void AtualizCadastro(long id, AtualizaCadastro atualizaCadastro);
         void ExcluiPessoa(long id);
-        Task<PessoaInfo> BuscaPessoaPeloNome(string name);
+        Task<IEnumerable<PessoaInfo>> BuscaPessoaPeloNome(string name);
         Task<PessoaInfo> BuscaPessoaPeloCpf(string cpf);
     }
 }

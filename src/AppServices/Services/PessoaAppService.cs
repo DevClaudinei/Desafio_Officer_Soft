@@ -5,6 +5,7 @@ using DomainModels.Entities;
 using DomainServices.Exceptions;
 using DomainServices.Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppServices.Services
@@ -50,12 +51,14 @@ namespace AppServices.Services
             return _mapper.Map<PessoaInfo>(pessoaEncontrada);
         }
 
-        public async Task<PessoaInfo> BuscaPessoaPeloNome(string nome)
+        public async Task<IEnumerable<PessoaInfo>> BuscaPessoaPeloNome(string nome)
         {
-            var pessoaEncontrada = await _customerService.BuscaPessoaPeloNome(nome)
-                ?? throw new NotFoundException($"Pessoa com o nome: {nome} não localizada.");
+            var pessoaEncontrada = await _customerService.BuscaPessoaPeloNome(nome);
 
-            return _mapper.Map<PessoaInfo>(pessoaEncontrada);
+            if (pessoaEncontrada.Count() == 0) 
+                throw new NotFoundException($"Pessoa com o nome: {nome} não localizada.");
+
+            return _mapper.Map<IEnumerable<PessoaInfo>>(pessoaEncontrada);
         }
 
         public async Task<AtualizaCadastro> MostraPessoaPorId(long id)
