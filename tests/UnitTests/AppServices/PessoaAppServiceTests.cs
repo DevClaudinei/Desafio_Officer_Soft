@@ -6,6 +6,7 @@ using DomainServices.Exceptions;
 using DomainServices.Services.Interfaces;
 using FluentAssertions;
 using Moq;
+using System.Linq;
 using System.Threading.Tasks;
 using UnitTests.Fixtures;
 
@@ -142,16 +143,18 @@ namespace UnitTests.Aplicacao
         public async Task Deveria_Passar_Quando_Tentar_Buscar_Pessoa_Por_Nome()
         {
             // Arrange
-            var pessoaFake = PessoaFixture.PessoaFake();
+            var pessoasFake = PessoaFixture.PessoasFakes(1);
+            var pessoaFake = pessoasFake.First();
+
 
             _pessoaService.Setup(x => x.BuscaPessoaPeloNome(It.IsAny<string>()))
-                .ReturnsAsync(pessoaFake);
+                .ReturnsAsync(pessoasFake);
 
             // Act
             var result = await _pessoaAppService.BuscaPessoaPeloNome(pessoaFake.Nome);
 
             // Assert
-            result.Nome.Should().Be(pessoaFake.Nome);
+            result.Should().HaveCount(1);
 
             _pessoaService.Verify(x => x.BuscaPessoaPeloNome(It.IsAny<string>()), Times.Once());
         }
