@@ -11,7 +11,7 @@ namespace DomainServices.Services.Interfaces
         void AtualizCadastro(long id, Pessoa pessoa);
         void ExcluiPessoa(long id);
         Task<Pessoa> BuscaPessoaPorId(long id);
-        Task<Pessoa> BuscaPessoaPeloNome(string name);
+        Task<IEnumerable<Pessoa>> BuscaPessoaPeloNome(string name);
         Task<Pessoa> BuscaPessoaPeloCpf(string cpf);
     }
 }

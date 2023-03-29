@@ -75,14 +75,14 @@ namespace DomainServices.Services
             return await repository.SingleOrDefaultAsync(pessoaEncontrada);
         }
 
-        public async Task<Pessoa> BuscaPessoaPeloNome(string name)
+        public async Task<IEnumerable<Pessoa>> BuscaPessoaPeloNome(string name)
         {
             var repository = RepositoryFactory.Repository<Pessoa>();
 
-            var pessoaEncontrada = repository.SingleResultQuery()
+            var pessoaEncontrada = repository.MultipleResultQuery()
                 .AndFilter(x => x.Nome.Contains(name));
 
-            return  await repository.SingleOrDefaultAsync(pessoaEncontrada);
+            return await repository.SearchAsync(pessoaEncontrada);
         }
 
         public void AtualizCadastro(long id, Pessoa pessoa)

@@ -19,7 +19,7 @@ namespace UnitTests.Fixtures
                 .RuleFor(x => x.Municipio, f => f.Person.Address.City)
                 .RuleFor(x => x.Uf, f => f.Random.String())
                 .RuleFor(x => x.Rg, f => f.Random.String())
-                .Generate();
+            .Generate();
 
             return criaCadastroFake;
         }
