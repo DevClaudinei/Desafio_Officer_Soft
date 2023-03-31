@@ -62,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.DataDeCriacao)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Details" class="btn btn-success btn-sm" asp-route-id="@item.Id">Detalhes</a>
+                    <a asp-action="Edit" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Atualizar</a>
+                    <a asp-action="Delete" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Excluir</a>
             </td>
         </tr>
 }

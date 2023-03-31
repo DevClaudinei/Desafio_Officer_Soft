@@ -1,6 +1,7 @@
 ﻿using Application.Models.DTOs;
 using Bogus;
 using Bogus.Extensions.Brazil;
+using System.Collections.Generic;
 
 namespace UnitTests.Fixtures
 {

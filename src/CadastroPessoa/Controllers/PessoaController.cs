@@ -19,17 +19,23 @@ namespace CadastroPessoa.Controllers
         }
 
         // GET: Pessoa
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _pessoaAppService.MostraTodosCadastrados());
+            return View(_pessoaAppService.MostraTodosCadastrados());
         }
 
         // GET: Pessoa/Details/5
         public async Task<IActionResult> Details(long id)
         {
-            return View(await _pessoaAppService.BuscaPessoaPorId(id));
+            try
+            {
+                return View(await _pessoaAppService.BuscaPessoaPorId(id));
+            }
+            catch (NotFoundException e)
+            {
+                return View("Error404", e);
+            }
         }
-
 
         public async Task<IActionResult> GetByName(string nome)
         {
@@ -155,6 +161,5 @@ namespace CadastroPessoa.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

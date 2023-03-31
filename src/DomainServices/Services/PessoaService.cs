@@ -1,37 +1,37 @@
 ﻿using DomainModels.Entities;
 using DomainServices.Exceptions;
 using DomainServices.Services.Interfaces;
-using Infrastructure.Data.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
+using EntityFrameworkCore.UnitOfWork.Interfaces;
+using Infrastructure.Data.Context;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DomainServices.Services
 {
-    public class PessoaService : IPessoaService
+    public class PessoaService : BaseService, IPessoaService
     {
-        private readonly ApplicationDbContext _context;
-
-        public PessoaService(ApplicationDbContext context)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+        public PessoaService(
+            IUnitOfWork<DataContext> unitOfWork,
+            IRepositoryFactory<DataContext> repositoryFactory
+        ) : base(unitOfWork, repositoryFactory) { }
 
         public async Task<long> CadastraPessoa(Pessoa pessoa)
         {
+            var unitOfWork = UnitOfWork.Repository<Pessoa>();
+
             pessoa.Cpf = FormataCpf(pessoa.Cpf);
             VerificaSePessoaJaExiste(pessoa);
 
-            var cadastro = _context.Pessoas.Add(pessoa);
-            await _context.SaveChangesAsync();
+            var cadastro = unitOfWork.Add(pessoa);
+            await UnitOfWork.SaveChangesAsync();
 
-            return cadastro.Entity.Id;
+            return cadastro.Id;
         }
 
         private void VerificaSePessoaJaExiste(Pessoa pessoa)
         {
-            var pessoaJaExiste = _context.Pessoas.AnyAsync(x => x.Cpf.Equals(pessoa.Cpf)).Result;
+            var repository = RepositoryFactory.Repository<Pessoa>();
+            var pessoaJaExiste = repository.Any(x => x.Cpf.Equals(pessoa.Cpf));
 
             if (pessoaJaExiste)
                 throw new BadRequestException($"Pessoa com o Cpf: {pessoa.Cpf} já esta cadastrada.");
@@ -39,61 +39,83 @@ namespace DomainServices.Services
 
         private static string FormataCpf(string cpf)
         {
-            return cpf.Substring(0, 3) + "." + cpf.Substring(3, 3) + "." + cpf.Substring(6, 3) + "-" + cpf.Substring(9, 2);
+            if (cpf.Length == 11)
+                return cpf.Substring(0, 3) + "." + cpf.Substring(3, 3) + "." + cpf.Substring(6, 3) + "-" + cpf.Substring(9, 2);
+
+            return cpf;
         }
 
-        public async Task<IEnumerable<Pessoa>> MostraTodosCadastrados()
+        public IEnumerable<Pessoa> MostraTodosCadastrados()
         {
-            var pessoasCadastradas = await _context.Pessoas.ToListAsync();
+            var repository = RepositoryFactory.Repository<Pessoa>();
+            var pessoasCadastradas = repository.MultipleResultQuery();
 
-            return pessoasCadastradas;
+            return repository.Search(pessoasCadastradas);
         }
 
         public async Task<Pessoa> BuscaPessoaPeloCpf(string cpf)
         {
+            var repository = RepositoryFactory.Repository<Pessoa>();
+
             cpf = FormataCpf(cpf);
 
-            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Cpf.Equals(cpf));
+            var pessoaEncontrada = repository.SingleResultQuery()
+                .AndFilter(x => x.Cpf.Equals(cpf));
 
-            return pessoaEncontrada;
+            return await repository.SingleOrDefaultAsync(pessoaEncontrada);
         }
 
         public async Task<Pessoa> BuscaPessoaPorId(long id)
         {
-            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var repository = RepositoryFactory.Repository<Pessoa>();
 
-            return pessoaEncontrada;
+            var pessoaEncontrada = repository.SingleResultQuery()
+                .AndFilter(x => x.Id.Equals(id));
+
+            return await repository.SingleOrDefaultAsync(pessoaEncontrada);
         }
 
-        public async Task<Pessoa> BuscaPessoaPeloNome(string name)
+        public async Task<IEnumerable<Pessoa>> BuscaPessoaPeloNome(string name)
         {
-            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Nome.Contains(name));
+            var repository = RepositoryFactory.Repository<Pessoa>();
 
-            return pessoaEncontrada;
+            var pessoaEncontrada = repository.MultipleResultQuery()
+                .AndFilter(x => x.Nome.Contains(name));
+
+            return await repository.SearchAsync(pessoaEncontrada);
         }
 
-        public async Task<Pessoa> MostraPessoaPorId(long id)
+        public void AtualizCadastro(long id, Pessoa pessoa)
         {
-            var pessoaEncontrada = await _context.Pessoas.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var unitOfWork = UnitOfWork.Repository<Pessoa>();
 
-            return pessoaEncontrada;
-        }
+            var pessoaParaAtualizacao = PessoaExiste(id).Result;
 
-        public void AtualizCadastro(Pessoa pessoa)
-        {
             pessoa.Cpf = FormataCpf(pessoa.Cpf);
+            pessoa.DataDeCriacao = pessoaParaAtualizacao.DataDeCriacao;
 
-            _context.Update(pessoa);
-            _context.SaveChanges();
+            unitOfWork.Update(pessoa);
+            UnitOfWork.SaveChanges();
+        }
+
+        private Task<Pessoa> PessoaExiste(long id)
+        {
+            var pessoaEncontrada = BuscaPessoaPorId(id);
+
+            if (pessoaEncontrada.Result is null) 
+                throw new NotFoundException($"Pessoa com o Id: {id} não localizada.");
+
+            return pessoaEncontrada;
         }
 
         public void ExcluiPessoa(long id)
         {
-            var pessoaParaExclusao = _context.Pessoas.Find(id) 
-                ?? throw new NotFoundException($"Pessoa com o Id: {id} não localizada.");
+            var unitOfWork = UnitOfWork.Repository<Pessoa>();
 
-            _context.Remove(pessoaParaExclusao);
-            _context.SaveChangesAsync();
+            var pessoaParaExclusao = PessoaExiste(id).Result;
+
+            unitOfWork.Remove(pessoaParaExclusao);
+            UnitOfWork.SaveChanges();
         }
     }
 }

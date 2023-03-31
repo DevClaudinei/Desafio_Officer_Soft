@@ -10,7 +10,6 @@ namespace AppServices.Profiles
         {
             CreateMap<AtualizaCadastro, Pessoa>().ReverseMap();
             CreateMap<CriaCadastro, Pessoa>();
-            CreateMap<Pessoa, RetornoPessoaCadastrada>();
             CreateMap<Pessoa, PessoaInfo>()
                 .ForMember(x => x.Nome, opts => opts.MapFrom(x => x.Nome))
                 .ForMember(x => x.Cpf, opts => opts.MapFrom(x => x.Cpf))
