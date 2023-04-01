@@ -44,7 +44,7 @@ $ Executar o comando dotnet run
 - Utilizando a URL <https://localhost:7167>
 ```
 ## Tela inicial:
-![image](https://user-images.githubusercontent.com/103595662/227285631-ef78ca24-476b-4180-9db8-7e383d99dd3d.png)
+![image](https://user-images.githubusercontent.com/103595662/229291345-339367c1-737c-4c32-b789-db2def040e40.png)
 
 ### Login 
 - É utilizado para utilizar as funcionalidades do sistema. Para isso será necessário informar email e senha.
@@ -66,16 +66,16 @@ Nesta pagina teremos as possibilidades:
 - Buscar uma pessoa pelo Id (Details);
 
 ### Tela de Create
-![image](https://user-images.githubusercontent.com/103595662/227292912-c3f8e7e0-8ae5-4e44-99cc-c1161fdd7a3c.png)
+![image](https://user-images.githubusercontent.com/103595662/229291412-3c4bd5d2-8fb4-4b43-bb00-121ad6b3f1ca.png)
 
 ### Tela de Edit
-![image](https://user-images.githubusercontent.com/103595662/227295630-0e36727c-446d-4979-87a2-4a274a345645.png)
+![image](https://user-images.githubusercontent.com/103595662/229291514-6b56dbea-f407-43bc-a7e9-3b7d8f24b0f8.png)
 
 ### Tela de Delete
-![image](https://user-images.githubusercontent.com/103595662/227295839-f382825d-4412-4e22-b574-5074781be778.png)
+![image](https://user-images.githubusercontent.com/103595662/229291549-d291bedc-ea46-4be3-80ab-d1312cfb992a.png)
 
 ### Tela Cadastro
-![image](https://user-images.githubusercontent.com/103595662/227296379-4a496f34-7a23-4ba7-847b-111ef7ffa451.png)
+![image](https://user-images.githubusercontent.com/103595662/229291724-7f272d1e-63a9-4783-bc58-0de35e84c0bf.png)
 
 
 ## 🛠 Tecnologias
@@ -88,6 +88,12 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [SQLite](https://sqlite.org/download.html)
 - [AutoMapper](https://automapper.org/)
 - [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
+- [UnitOfWork](https://www.nuget.org/packages/EntityFrameworkCore.Data.UnitOfWork)
+- [EntityFramework](https://learn.microsoft.com/pt-br/ef/)
+- [XUnit](https://xunit.net/)
+- [Moq](https://documentation.help/Moq/)
+- [Bogus](https://github.com/bchavez/Bogus)
+- [Fluent Assertions](https://fluentassertions.com/)
 
 ## Licença
 
